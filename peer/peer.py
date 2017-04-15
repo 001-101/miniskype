@@ -2,17 +2,17 @@
 import socket
 import os
 
-os.system('cls' if os.name == 'nt' else 'clear')
-ttyheight, ttywidth = os.popen('stty size', 'r').read().split()
-listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+os.system('cls' if os.name == 'nt' else 'clear') #Clear screen / Képernyő törlése
+ttyheight, ttywidth = os.popen('stty size', 'r').read().split() #Get terminal size / Terminál méretének lekérdezése
+listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #TCP socket
+listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) #Reuse old port / Régi, zárolt port újrafelhasználása egy crash után
 address = ('localhost', 550)
-print '\n'.join(('{:^'+ttywidth+'}').format(s) for s in "Mini-Skype 2017 v1.0".split('\n'))
+print '\n'.join(('{:^'+ttywidth+'}').format(s) for s in "Mini-Skype 2017 v1.0".split('\n')) #Center logo / Logo középre
 print "Starting server on %s:%s..." % address
-listener.bind(address)
+listener.bind(address) #Open port / Port nyitása
 print "Waiting for connections..."
 listener.settimeout(1)
-listener.listen(1)
+listener.listen(1) #Allow incoming connections / Bejövő kapcsolatok engedélyezése
 
 while True:
 	try:
@@ -41,5 +41,5 @@ while True:
 				file.write(request.split()[1] + "=" + request.split()[2] + "\n")
 			connection.send("OK")
 	finally:
-		connection.close()
+		connection.close() #Disconnect from client / Kapcsolat bontása a kliensel
 listener.close()
